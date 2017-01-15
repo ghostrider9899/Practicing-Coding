@@ -23,10 +23,6 @@ echo " " >> test.txt
 $a = hostname
 Get-WmiObject win32_computersystem -ComputerName $a | Format-Table -Property username >> test.txt
 echo " " >> test.txt
-echo "--------------Services Running on the Machine---------" >> test.txt
-echo " " >> test.txt
-Get-Service | select name,status >> test.txt
-echo " " >> test.txt
 echo "--------------Network information---------------------" >> test.txt
 echo " " >> test.txt
 ipconfig >> test.txt
@@ -60,13 +56,23 @@ echo "----------------Getting System Process----------------" >> test.txt
 echo " " >> test.txt
 gps | select processname | sort | Get-Unique -AsString >> test.txt 
 echo " " >> test.txt
+echo "--------------Services Running on the Machine---------" >> test.txt
+echo " " >> test.txt
+Get-Service | select name,status >> test.txt
+echo " " >> test.txt
 echo "------------------------------------------------------" >> test.txt
 
-echo " " 
-$found = $(Read-Host -Prompt "Please name the file")
-Rename-Item test.txt $found 2>$null
 echo " "
-echo "Check your user profile if done correctly at $env:userprofile"
+ 
+$found = $(Read-Host -Prompt "Please name the file")
+
+Move-Item test.txt $env:userprofile\Desktop\
+
+Rename-Item $env:userprofile\Desktop\test.txt $env:userprofile\Desktop\$found.txt 2>$null
+
+echo " "
+
+echo "Check your user profile if done correctly at $env:userprofile\Desktop\$found.txt"
 
 
 
